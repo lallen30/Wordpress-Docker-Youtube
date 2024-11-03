@@ -3,7 +3,7 @@ version: '3.8'
 services:
   wordpress:
     image: wordpress:latest
-    platform: linux/arm64/v8
+    platform: linux/arm64/v8  # Specify platform for ARM64
     restart: always
     depends_on:
       - db
@@ -18,7 +18,7 @@ services:
       - wordpress_data:/var/www/html
 
   db:
-    image: mysql:8.0
+    image: mysql:8.0    # Updated to MySQL 8.0 which has better ARM64 support
     platform: linux/arm64/v8
     restart: always
     environment:
@@ -30,7 +30,7 @@ services:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
-    image: arm64v8/phpmyadmin
+    image: arm64v8/phpmyadmin    # Using ARM64 specific image
     restart: always
     ports:
       - "8081:80"
@@ -41,14 +41,13 @@ services:
   sftp:
     image: emberstack/sftp
     platform: linux/arm64/v8
-    restart: always
     ports:
       - "2222:22"
     volumes:
-      - wordpress_data:/home/sftp/wordpress
+      - wordpress_data:/home/sftp/wordpress/
     environment:
       SFTP_USERS: wordpress:password:1001:1001:wordpress
 
 volumes:
   wordpress_data:
-  db_data: 
+  db_data:
